@@ -34,20 +34,15 @@ class _MainScreenState extends State<MainScreen> {
         return CustomPaint(
           size: Size.square(size),
           painter: QrPainter(
-            data: message,
+            data:
+                '000201010212261070014BR.GOV.BCB.PIX013656574d56-bf57-4040-ba1b-08819edd0dc20245Pagamento do pedido jaG54nXx2oqfkSFPHajPYVZ1B52040000530398654031.05802BR5906dbscdj6009SAO PAULO61080312405062290525jaG54nXx2oqfkSFPHajPYVZ1B63044D44',
             version: QrVersions.auto,
-            eyeStyle: const QrEyeStyle(
-              eyeShape: QrEyeShape.square,
-              color: Color(0xff128760),
-            ),
-            dataModuleStyle: const QrDataModuleStyle(
-              dataModuleShape: QrDataModuleShape.circle,
-              color: Color(0xff1a5441),
-            ),
+
             // size: 320.0,
             embeddedImage: snapshot.data,
             embeddedImageStyle: QrEmbeddedImageStyle(
-              size: Size.square(60),
+              size: Size.square(70),
+              color: Colors.white,
             ),
           ),
         );

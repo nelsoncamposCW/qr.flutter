@@ -38,11 +38,11 @@ class QrPainter extends CustomPainter {
     this.embeddedImage,
     this.embeddedImageStyle,
     this.eyeStyle = const QrEyeStyle(
-      eyeShape: QrEyeShape.square,
+      eyeShape: QrEyeShape.circle,
       color: Color(0xFF000000),
     ),
     this.dataModuleStyle = const QrDataModuleStyle(
-      dataModuleShape: QrDataModuleShape.square,
+      dataModuleShape: QrDataModuleShape.circle,
       color: Color(0xFF000000),
     ),
   }) : assert(QrVersions.isSupportedVersion(version)) {
@@ -337,15 +337,15 @@ class QrPainter extends CustomPainter {
       canvas.drawRect(dotRect, dotPaint);
     } else {
       final roundedOuterStrokeRect =
-          RRect.fromRectAndRadius(outerRect, Radius.circular(radius));
+          RRect.fromRectAndRadius(outerRect, Radius.circular(9));
       canvas.drawRRect(roundedOuterStrokeRect, outerPaint);
 
       final roundedInnerStrokeRect =
-          RRect.fromRectAndRadius(outerRect, Radius.circular(innerRadius));
+          RRect.fromRectAndRadius(outerRect, Radius.circular(9));
       canvas.drawRRect(roundedInnerStrokeRect, innerPaint);
 
       final roundedDotStrokeRect =
-          RRect.fromRectAndRadius(dotRect, Radius.circular(dotSize));
+          RRect.fromRectAndRadius(dotRect, Radius.circular(4));
       canvas.drawRRect(roundedDotStrokeRect, dotPaint);
     }
   }
@@ -368,13 +368,17 @@ class QrPainter extends CustomPainter {
   }
 
   void _drawImageOverlay(
-      Canvas canvas, Offset position, Size size, QrEmbeddedImageStyle? style) {
+    Canvas canvas,
+    Offset position,
+    Size size,
+    QrEmbeddedImageStyle? style,
+  ) {
     final paint = Paint()
       ..isAntiAlias = true
       ..filterQuality = FilterQuality.high;
     if (style != null) {
       if (style.color != null) {
-        paint.colorFilter = ColorFilter.mode(style.color!, BlendMode.srcATop);
+        paint.colorFilter = ColorFilter.mode(style.color!, BlendMode.colorBurn);
       }
     }
     final srcSize =
