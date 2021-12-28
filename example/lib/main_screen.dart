@@ -20,35 +20,6 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
-    final message =
-        // ignore: lines_longer_than_80_chars
-        'Hey this is a QR code. Change this value in the main_screen.dart file.';
-
-    final qrFutureBuilder = FutureBuilder<ui.Image>(
-      future: _loadOverlayImage(),
-      builder: (ctx, snapshot) {
-        final size = 280.0;
-        if (!snapshot.hasData) {
-          return Container(width: size, height: size);
-        }
-        return CustomPaint(
-          size: Size.square(size),
-          painter: QrPainter(
-            data:
-                '000201010212261070014BR.GOV.BCB.PIX013656574d56-bf57-4040-ba1b-08819edd0dc20245Pagamento do pedido jaG54nXx2oqfkSFPHajPYVZ1B52040000530398654031.05802BR5906dbscdj6009SAO PAULO61080312405062290525jaG54nXx2oqfkSFPHajPYVZ1B63044D44',
-            version: QrVersions.auto,
-
-            // size: 320.0,
-            embeddedImage: snapshot.data,
-            embeddedImageStyle: QrEmbeddedImageStyle(
-              size: Size.square(70),
-              color: Colors.white,
-            ),
-          ),
-        );
-      },
-    );
-
     return Material(
       color: Colors.white,
       child: SafeArea(
@@ -59,16 +30,27 @@ class _MainScreenState extends State<MainScreen> {
             children: <Widget>[
               Expanded(
                 child: Center(
-                  child: Container(
-                    width: 280,
-                    child: qrFutureBuilder,
+                  child: QrImage(
+                    size: 200,
+                    eyeStyle: QrEyeStyle(
+                      eyeShape: QrEyeShape.circle,
+                      color: Colors.black,
+                    ),
+                    embeddedImage: AssetImage(
+                      'assets/images/4.0x/logo_yakka.png',
+                    ),
+                    dataModuleStyle: QrDataModuleStyle(
+                      dataModuleShape: QrDataModuleShape.circle,
+                      color: Colors.black,
+                    ),
+                    embeddedImageStyle: QrEmbeddedImageStyle(
+                      size: Size.square(30),
+                      color: Colors.white,
+                    ),
+                    data:
+                        "000201010212261070014BR.GOV.BCB.PIX013656574d56-bf57-4040-ba1b-08819edd0dc20245Pagamento do pedido jaG54nXx2oqfkSFPHajPYVZ1B52040000530398654031.05802BR5906dbscdj6009SAO PAULO61080312405062290525jaG54nXx2oqfkSFPHajPYVZ1B63044D44",
                   ),
                 ),
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: 20, horizontal: 40)
-                    .copyWith(bottom: 40),
-                child: Text(message),
               ),
             ],
           ),

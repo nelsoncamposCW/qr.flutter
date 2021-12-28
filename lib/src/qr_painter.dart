@@ -8,6 +8,7 @@ import 'dart:async';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
 
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:qr/qr.dart';
@@ -178,9 +179,15 @@ class QrPainter extends CustomPainter {
     // draw the finder pattern elements
     _drawFinderPatternItem(FinderPatternPosition.topLeft, canvas, paintMetrics);
     _drawFinderPatternItem(
-        FinderPatternPosition.bottomLeft, canvas, paintMetrics);
+      FinderPatternPosition.bottomLeft,
+      canvas,
+      paintMetrics,
+    );
     _drawFinderPatternItem(
-        FinderPatternPosition.topRight, canvas, paintMetrics);
+      FinderPatternPosition.topRight,
+      canvas,
+      paintMetrics,
+    );
 
     // DEBUG: draw the inner content boundary
 //    final paint = Paint()..style = ui.PaintingStyle.stroke;
@@ -337,15 +344,15 @@ class QrPainter extends CustomPainter {
       canvas.drawRect(dotRect, dotPaint);
     } else {
       final roundedOuterStrokeRect =
-          RRect.fromRectAndRadius(outerRect, Radius.circular(9));
+          RRect.fromRectAndRadius(outerRect, Radius.circular(6));
       canvas.drawRRect(roundedOuterStrokeRect, outerPaint);
 
       final roundedInnerStrokeRect =
-          RRect.fromRectAndRadius(outerRect, Radius.circular(9));
+          RRect.fromRectAndRadius(outerRect, Radius.circular(6));
       canvas.drawRRect(roundedInnerStrokeRect, innerPaint);
 
       final roundedDotStrokeRect =
-          RRect.fromRectAndRadius(dotRect, Radius.circular(4));
+          RRect.fromRectAndRadius(dotRect, Radius.circular(2));
       canvas.drawRRect(roundedDotStrokeRect, dotPaint);
     }
   }
@@ -353,7 +360,10 @@ class QrPainter extends CustomPainter {
   bool _hasOneNonZeroSide(Size size) => size.longestSide > 0;
 
   Size _scaledAspectSize(
-      Size widgetSize, Size originalSize, Size? requestedSize) {
+    Size widgetSize,
+    Size originalSize,
+    Size? requestedSize,
+  ) {
     if (requestedSize != null && !requestedSize.isEmpty) {
       return requestedSize;
     } else if (requestedSize != null && _hasOneNonZeroSide(requestedSize)) {
@@ -375,16 +385,21 @@ class QrPainter extends CustomPainter {
   ) {
     final paint = Paint()
       ..isAntiAlias = true
-      ..filterQuality = FilterQuality.high;
+      ..filterQuality = FilterQuality.high
+      ..color = Colors.white;
     if (style != null) {
       if (style.color != null) {
-        paint.colorFilter = ColorFilter.mode(style.color!, BlendMode.colorBurn);
+        paint.colorFilter = ColorFilter.mode(style.color!, BlendMode.dstATop);
       }
     }
-    final srcSize =
-        Size(embeddedImage!.width.toDouble(), embeddedImage!.height.toDouble());
+    final srcSize = Size(
+      embeddedImage!.width.toDouble(),
+      embeddedImage!.height.toDouble(),
+    );
     final src = Alignment.center.inscribe(srcSize, Offset.zero & srcSize);
     final dst = Alignment.center.inscribe(size, position & size);
+    final a = Alignment.center.inscribe(ui.Size(50, 50), position & size);
+    canvas.drawRect(a, paint);
     canvas.drawImageRect(embeddedImage!, src, dst, paint);
   }
 
