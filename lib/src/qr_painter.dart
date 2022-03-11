@@ -399,7 +399,8 @@ class QrPainter extends CustomPainter {
     final src = Alignment.center.inscribe(srcSize, Offset.zero & srcSize);
     final dst = Alignment.center.inscribe(size, position & size);
     final a = Alignment.center.inscribe(ui.Size(50, 50), position & size);
-    canvas.drawRect(a, paint);
+    final b = ui.RRect.fromRectAndRadius(a, Radius.circular(8));
+    canvas.drawRRect(b, paint);
     canvas.drawImageRect(embeddedImage!, src, dst, paint);
   }
 
